@@ -393,14 +393,22 @@ void rtw_cfg80211_indicate_disconnect(_adapter *padapter)
 		return;
 	}
 
-	if(pwdev->sme_state==CFG80211_SME_CONNECTING)
+	//if(pwdev->sme_state==CFG80211_SME_CONNECTING)
+	//	cfg80211_connect_result(padapter->pnetdev, NULL, NULL, 0, NULL, 0, 
+	//						WLAN_STATUS_UNSPECIFIED_FAILURE, GFP_ATOMIC/*GFP_KERNEL*/);
+	//else if(pwdev->sme_state==CFG80211_SME_CONNECTED)
+	//	cfg80211_disconnected(padapter->pnetdev, 0,
+	//		   				NULL, 0, GFP_ATOMIC);
+	//else
+	//	printk("pwdev->sme_state=%d\n", pwdev->sme_state);
+
+	if(check_fwstate(pmlmepriv,_FW_UNDER_LINKING))
 		cfg80211_connect_result(padapter->pnetdev, NULL, NULL, 0, NULL, 0, 
 							WLAN_STATUS_UNSPECIFIED_FAILURE, GFP_ATOMIC/*GFP_KERNEL*/);
-	else if(pwdev->sme_state==CFG80211_SME_CONNECTED)
-		cfg80211_disconnected(padapter->pnetdev, 0,
-			   				NULL, 0, GFP_ATOMIC);
+	else if(check_fwstate(pmlmepriv,_FW_LINKED))
+		cfg80211_disconnected(padapter->pnetdev, 0, NULL, 0, 0, GFP_ATOMIC);
 	else
-		printk("pwdev->sme_state=%d\n", pwdev->sme_state);
+		printk("pmlmepriv=%d\n", get_fwstate(pmlmepriv));
 
 }
  	
@@ -864,12 +872,14 @@ static int cfg80211_rtw_get_station(struct wiphy *wiphy,
 			return -ENOENT;
 		}	
 
-		sinfo->filled |= STATION_INFO_SIGNAL;
+		//sinfo->filled |= STATION_INFO_SIGNAL;
+		sinfo->filled |= BIT(NL80211_STA_INFO_SIGNAL);
 		//sinfo->signal = translate_percentage_to_dbm(padapter->recvpriv.signal_strength);
 		//sinfo->signal = (u8) ((cur_network->network.Rssi+1)>>1)-95;
 		sinfo->signal = cur_network->network.Rssi;
 
-		sinfo->filled |= STATION_INFO_TX_BITRATE;
+		//sinfo->filled |= STATION_INFO_TX_BITRATE;
+		sinfo->filled |= BIT(NL80211_STA_INFO_TX_BITRATE);
 		sinfo->txrate.legacy = 10 * rtw_get_network_max_rate(padapter, &pmlmepriv->cur_network.network);
 	}
 	

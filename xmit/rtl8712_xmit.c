@@ -1921,7 +1921,7 @@ thread_return xmit_thread(thread_context context)
 	init_hwxmits(hwxmits, hwentry);
 
 #ifdef PLATFORM_LINUX
-	daemonize("%s", padapter->pnetdev->name);
+	//daemonize("%s", padapter->pnetdev->name);
 	allow_signal(SIGTERM);
 #endif
 

@@ -216,7 +216,7 @@ thread_return event_thread(thread_context context)
 _func_enter_;
 	
 #ifdef PLATFORM_LINUX	
-	daemonize("%s", padapter->pnetdev->name);
+	//daemonize("%s", padapter->pnetdev->name);
 	allow_signal(SIGTERM);
 #endif	
 
@@ -1226,7 +1226,7 @@ _func_enter_;
 
 	
 #ifdef PLATFORM_LINUX	
-	daemonize("%s", padapter->pnetdev->name);
+	//daemonize("%s", padapter->pnetdev->name);
 	allow_signal(SIGTERM);
 #endif	
 

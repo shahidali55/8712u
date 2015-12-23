@@ -76,7 +76,7 @@
 	typedef unsigned long _irqL;
 	typedef	struct	net_device * _nic_hdl;
 	
-	typedef pid_t		_thread_hdl_;
+	typedef void*	_thread_hdl_;
 	typedef int		thread_return;
 	typedef void*	thread_context;
 
@@ -389,8 +389,8 @@ static __inline void thread_enter(void *context)
 {
 #ifdef PLATFORM_LINUX
 	//struct net_device *pnetdev = (struct net_device *)context;
-	//daemonize("%s", pnetdev->name);
-	daemonize("%s", "RTKTHREAD");
+	////daemonize("%s", pnetdev->name);
+	//daemonize("%s", "RTKTHREAD");
 	allow_signal(SIGTERM);
 #endif
 }

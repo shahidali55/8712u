@@ -29,6 +29,7 @@
  
 
 #include <linux/module.h>
+#include <linux/kthread.h>
 #include <linux/init.h>
 
 #include <osdep_service.h>
@@ -347,25 +348,37 @@ u32 start_drv_threads(_adapter *padapter)
     RT_TRACE(_module_os_intfs_c_,_drv_info_,("+start_drv_threads\n"));
 
 #ifdef CONFIG_SDIO_HCI
-    padapter->xmitThread = kernel_thread(xmit_thread, padapter, CLONE_FS|CLONE_FILES);
-    if(padapter->xmitThread < 0)
+    //padapter->xmitThread = kernel_thread(xmit_thread, padapter, CLONE_FS|CLONE_FILES);
+    //if(padapter->xmitThread < 0)
+	//	_status = _FAIL;
+	padapter->xmitThread = kthread_run(xmit_thread, padapter, "%s", padapter->pnetdev->name);
+	if(IS_ERR(padapter->xmitThread))
 		_status = _FAIL;
 #endif
 
 #ifdef CONFIG_RECV_THREAD_MODE
-    padapter->recvThread = kernel_thread(recv_thread, padapter, CLONE_FS|CLONE_FILES);
-    if(padapter->recvThread < 0)
-		_status = _FAIL;	
+    //padapter->recvThread = kernel_thread(recv_thread, padapter, CLONE_FS|CLONE_FILES);
+    //if(padapter->recvThread < 0)
+	//	_status = _FAIL;	
+	padapter->recvThread = kthread_run(recv_thread, padapter, "%s", padapter->pnetdev->name);
+	if(IS_ERR(padapter->recvThread))
+		_status = _FAIL;
 #endif
 
-    padapter->cmdThread = kernel_thread(cmd_thread, padapter, CLONE_FS|CLONE_FILES);
-    if(padapter->cmdThread < 0)
-		_status = _FAIL;		
+    //padapter->cmdThread = kernel_thread(cmd_thread, padapter, CLONE_FS|CLONE_FILES);
+    //if(padapter->cmdThread < 0)
+	//	_status = _FAIL;		
+	padapter->cmdThread = kthread_run(cmd_thread, padapter, "%s", padapter->pnetdev->name);
+	if(IS_ERR(padapter->cmdThread))
+		_status = _FAIL;
 
 #ifdef CONFIG_EVENT_THREAD_MODE
-    padapter->evtThread = kernel_thread(event_thread, padapter, CLONE_FS|CLONE_FILES);
-    if(padapter->evtThread < 0)
-		_status = _FAIL;		
+    //padapter->evtThread = kernel_thread(event_thread, padapter, CLONE_FS|CLONE_FILES);
+    //if(padapter->evtThread < 0)
+	//	_status = _FAIL;		
+	padapter->evtThread = kthread_run(evt_thread, padapter, "%s", padapter->pnetdev->name);
+	if(IS_ERR(padapter->evtThread))
+		_status = _FAIL;
 #endif
   
     return _status;
