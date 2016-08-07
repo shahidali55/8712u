@@ -30,6 +30,7 @@
 #include <drv_conf.h>
 #include <osdep_service.h>
 #include <wlan_bssdef.h>
+#include <linux/interrupt.h>
 
 
 #ifdef CONFIG_RTL8711
