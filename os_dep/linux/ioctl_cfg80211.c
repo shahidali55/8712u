@@ -406,7 +406,7 @@ void rtw_cfg80211_indicate_disconnect(_adapter *padapter)
 		cfg80211_connect_result(padapter->pnetdev, NULL, NULL, 0, NULL, 0, 
 							WLAN_STATUS_UNSPECIFIED_FAILURE, GFP_ATOMIC/*GFP_KERNEL*/);
 	else if(check_fwstate(pmlmepriv,_FW_LINKED))
-		cfg80211_disconnected(padapter->pnetdev, 0, NULL, 0, 0, GFP_ATOMIC);
+		cfg80211_disconnected(padapter->pnetdev, 0, NULL, 0, GFP_ATOMIC);
 	else
 		printk("pmlmepriv=%d\n", get_fwstate(pmlmepriv));
 
