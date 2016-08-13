@@ -1136,10 +1136,10 @@ void fwdbg_event_callback(_adapter *adapter , u8 *pbuf)
 			return;
 		
 #ifdef PLATFORM_LINUX
-                printk("fwdbg:%s\n", pbuf);      
+                //printk("fwdbg:%s\n", pbuf);      
 #endif
 
-                RT_TRACE(_module_rtl871x_cmd_c_,_drv_err_,("fwdbg:%s\n", pbuf));
+                //RT_TRACE(_module_rtl871x_cmd_c_,_drv_err_,("fwdbg:%s\n", pbuf));
 	}	
 
 }
